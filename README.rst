@@ -18,10 +18,38 @@ Since some software handling coverages sometime get slightly different results, 
 
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
-Quick and rough fixes
-----------------------------
+
+Getting started
+----------------------------------------------
+At the time of writing, the package includes just two methods from `bwtool <https://github.com/CRG-Barcelona/bwtool>`_. If you need more, you are more than welcome
+to open a pull request adding the new feature or opening a new issue with the request. In the second case I'll work on it when I'll get the time.
+
+Extract
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The extract method returns a pandas Dataframe with the data from the regions of a bed file extracted from the given bigwig.
+
+.. code:: python
+
+    from pybwtool import extract
+
+    df = extract("path/to/my/bed", "path/to/my/bigwig")
+
+Extract mean
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The extract_mean method, similarly to the extract methon, returns a pandas Dataframe with the mean of the data from the regions of a bed file extracted from the given bigwig.
+
+.. code:: python
+
+    from pybwtool import extract_mean
+
+    df = extract_mean("path/to/my/bed", "path/to/my/bigwig")
+
+
+Common fixes for getting bwtool to work
+----------------------------------------------
 - `For when the installation of bwtool gets stuck <https://github.com/CRG-Barcelona/bwtool/issues/65>`_
 - `For when the installation of libbeato (a required library) gets stuck <https://github.com/CRG-Barcelona/libbeato/issues/6>`_
+
 
 
 .. |travis| image:: https://travis-ci.org/LucaCappelletti94/pybwtool.png
