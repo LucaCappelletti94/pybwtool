@@ -41,7 +41,7 @@ script:
 - coverage combine --append || true
 - coverage report
 - coverage xml
-- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner; fi
+- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner > /dev/null; fi
 after_success:
 - coveralls
 - python-codacy-coverage -r coverage.xml
