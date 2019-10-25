@@ -18,10 +18,6 @@ Since some software handling coverages sometime get slightly different results, 
 
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
-Python wrapper for the `bwtool library <https://github.com/CRG-Barcelona/bwtool>`_.
-
-
-
 ## Quick and rough fixes
 
 - `For when the installation of bwtool gets stuck <https://github.com/CRG-Barcelona/bwtool/issues/65>`_

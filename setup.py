@@ -43,7 +43,7 @@ extras = {
 setup(
     name='pybwtool',
     version=__version__,
-    description="Python wrapper for the [bwtool library](https://github.com/CRG-Barcelona/bwtool).",
+    description="Python wrapper for the bwtool library.",
     long_description=long_description,
     url="https://github.com/LucaCappelletti94/pybwtool",
     author="Luca Cappelletti",
