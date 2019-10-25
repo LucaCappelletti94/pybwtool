@@ -30,7 +30,7 @@ script:
 - make > /dev/null
 - make install > /dev/null
 - cd ../bwtool/
-- git checkout 0c30432
+#- git checkout 0c30432
 - ./configure --prefix=$HOME CFLAGS="-g -O0 -I${HOME}/include" LDFLAGS=-L${HOME}/lib > /dev/null
 - make > /dev/null
 - make install > /dev/null
