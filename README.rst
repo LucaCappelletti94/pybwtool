@@ -2,7 +2,7 @@ pybwtool
 =========================================================================================
 |travis| |sonar_quality| |sonar_maintainability| |codacy| |code_climate_maintainability| |pip| |downloads|
 
-Python wrapper for the [bwtool library](https://github.com/CRG-Barcelona/bwtool).
+Python wrapper for the `bwtool library <https://github.com/CRG-Barcelona/bwtool>`_.
 
 How do I install this package?
 ----------------------------------------------
