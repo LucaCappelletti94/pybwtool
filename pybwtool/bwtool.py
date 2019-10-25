@@ -1,5 +1,4 @@
 import subprocess
-from subprocess import PIPE
 import os
 from typing import List
 import pandas as pd
@@ -11,7 +10,7 @@ def bwtool(*args: List) -> pd.DataFrame:
     """Return DataFRame from bwtool with the given args."""
     return pd.read_csv(StringIO(subprocess.run([
         "bwtool", *[str(arg) for arg in args], "/dev/stdout"
-    ], stdout=PIPE, stderr=PIPE).stdout.decode("utf-8")), header=None, sep="\t")
+    ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.decode("utf-8")), header=None, sep="\t")
 
 
 def _extract(bed_path: str, bigwig_path: str) -> pd.DataFrame:
