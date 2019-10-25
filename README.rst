@@ -18,17 +18,15 @@ Since some software handling coverages sometime get slightly different results, 
 
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
-Python wrapper for the [bwtool library](https://github.com/CRG-Barcelona/bwtool).
+Python wrapper for the `bwtool library <https://github.com/CRG-Barcelona/bwtool>`_.
 
 
 
 ## Quick and rough fixes
 
+- `For when the installation of bwtool gets stuck <https://github.com/CRG-Barcelona/bwtool/issues/65>`_
 
-
-- [For when the installation of bwtool gets stuck](https://github.com/CRG-Barcelona/bwtool/issues/65)
-
-- [For when the installation of libbeato (a required library) gets stuck](https://github.com/CRG-Barcelona/libbeato/issues/6)
+- `For when the installation of libbeato (a required library) gets stuck <https://github.com/CRG-Barcelona/libbeato/issues/6>`_
 
 
 .. |travis| image:: https://travis-ci.org/LucaCappelletti94/pybwtool.png
