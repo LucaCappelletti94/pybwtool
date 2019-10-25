@@ -20,7 +20,6 @@ Since some software handling coverages sometime get slightly different results, 
 
 Quick and rough fixes
 ----------------------------
-
 - `For when the installation of bwtool gets stuck <https://github.com/CRG-Barcelona/bwtool/issues/65>`_
 - `For when the installation of libbeato (a required library) gets stuck <https://github.com/CRG-Barcelona/libbeato/issues/6>`_
 

@@ -34,6 +34,7 @@ script:
 - ./configure --prefix=$HOME CFLAGS="-g -O0 -I${HOME}/include" LDFLAGS=-L${HOME}/lib
 - make
 - make install
+- cd ..
 - rm -rf .coverage
 - coverage erase
 - pytest --cov=pybwtool --cov-report xml:coverage.xml
