@@ -92,3 +92,29 @@ def extract_mean(bed_path: str, bigwig_path: str) -> pd.DataFrame:
     new_data.name = "mean_score"
     df = df.drop(columns=df.columns[-1])
     return pd.concat([df, new_data], axis=1)
+
+
+def extract_max(bed_path: str, bigwig_path: str) -> pd.DataFrame:
+    """Return DataFrame with max of extracted data from given big wig files for regions specified in given.
+
+    Parameters
+    ----------------------------------------
+    bed_path: str, the bed file from which to extract the regions.
+    bigwig_path: str, the bigwig file from which to extract the data for the regions
+
+    Raises
+    -----------------------------------------
+    ValueError:
+        When one of the given file path does not exist.
+
+    Returns
+    ------------------------------------------
+    Dataframe with extracted max data.
+    """
+
+    df = _extract(bed_path, bigwig_path)
+    new_data = df[df.columns[-1]
+                  ].str.split(",", expand=True).replace("NA", np.nan).astype(float).max()
+    new_data.name = "max_score"
+    df = df.drop(columns=df.columns[-1])
+    return pd.concat([df, new_data], axis=1)
