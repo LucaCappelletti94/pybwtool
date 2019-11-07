@@ -26,7 +26,7 @@ to open a pull request adding the new feature or opening a new issue with the re
 
 Extract
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The extract method returns a pandas Dataframe with the data from the regions of a bed file extracted from the given bigwig.
+The :code:`extract` method returns a pandas Dataframe with the data from the regions of a bed file extracted from the given bigwig.
 
 .. code:: python
 
@@ -36,13 +36,23 @@ The extract method returns a pandas Dataframe with the data from the regions of 
 
 Extract mean
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The extract_mean method, similarly to the extract methon, returns a pandas Dataframe with the mean of the data from the regions of a bed file extracted from the given bigwig.
+The :code:`extract_mean` method, similarly to the extract methon, returns a pandas Dataframe with the **mean** of the data from the regions of a bed file extracted from the given bigwig.
 
 .. code:: python
 
     from pybwtool import extract_mean
 
     df = extract_mean("path/to/my/bed", "path/to/my/bigwig")
+
+Extract max
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The :code:`extract_max` method, similarly to the extract methon, returns a pandas Dataframe with the **max** of the data from the regions of a bed file extracted from the given bigwig.
+
+.. code:: python
+
+    from pybwtool import extract_max
+
+    df = extract_max("path/to/my/bed", "path/to/my/bigwig")
 
 
 Common fixes for getting bwtool to work
