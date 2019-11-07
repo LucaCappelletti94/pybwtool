@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pybwtool
-Version: 1.0.0
+Version: 1.0.1
 Summary: Python wrapper for the bwtool library.
 Home-page: https://github.com/LucaCappelletti94/pybwtool
 Author: Luca Cappelletti
@@ -34,7 +34,7 @@ Description: pybwtool
         
         Extract
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        The extract method returns a pandas Dataframe with the data from the regions of a bed file extracted from the given bigwig.
+        The :code:`extract` method returns a pandas Dataframe with the data from the regions of a bed file extracted from the given bigwig.
         
         .. code:: python
         
@@ -44,13 +44,23 @@ Description: pybwtool
         
         Extract mean
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        The extract_mean method, similarly to the extract methon, returns a pandas Dataframe with the mean of the data from the regions of a bed file extracted from the given bigwig.
+        The :code:`extract_mean` method, similarly to the extract methon, returns a pandas Dataframe with the **mean** of the data from the regions of a bed file extracted from the given bigwig.
         
         .. code:: python
         
             from pybwtool import extract_mean
         
             df = extract_mean("path/to/my/bed", "path/to/my/bigwig")
+        
+        Extract max
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The :code:`extract_max` method, similarly to the extract methon, returns a pandas Dataframe with the **max** of the data from the regions of a bed file extracted from the given bigwig.
+        
+        .. code:: python
+        
+            from pybwtool import extract_max
+        
+            df = extract_max("path/to/my/bed", "path/to/my/bigwig")
         
         
         Common fixes for getting bwtool to work
