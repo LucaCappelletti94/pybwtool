@@ -1,5 +1,7 @@
 import subprocess
 import os
+from typing import Tuple
+from .utils import is_loosely_bed, bed_has_header
 from typing import List
 import pandas as pd
 from io import StringIO
@@ -8,23 +10,33 @@ import numpy as np
 
 def bwtool(*args: List) -> pd.DataFrame:
     """Return DataFRame from bwtool with the given args."""
-    return pd.read_csv(StringIO(subprocess.run([
+    df = pd.read_csv(StringIO(subprocess.run([
         "bwtool", *[str(arg) for arg in args], "/dev/stdout"
     ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.decode("utf-8")), header=None, sep="\t")
+    return df.drop(columns=df.columns[-1]), df[df.columns[-1]].str.split(",", expand=True).replace("NA", np.nan).astype(float)
 
 
-def _extract(bed_path: str, bigwig_path: str) -> pd.DataFrame:
+def extract(bed_path: str, bigwig_path: str, nan_threshold: float = 0.95) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Return DataFrame with extracted data from given big wig files for regions specified in given.
 
     Parameters
     ----------------------------------------
-    bed_path: str, the bed file from which to extract the regions.
-    bigwig_path: str, the bigwig file from which to extract the data for the regions
+    bed_path: str,
+        the bed file from which to extract the regions.
+    bigwig_path: str,
+        the bigwig file from which to extract the data for the regions
+    nan_threshold:float=0.95,
+        Maximum percentage of nan to allow in a row to keep it,
+        otherwise the row is dropped.
 
     Raises
     -----------------------------------------
     ValueError:
         When one of the given file path does not exist.
+    ValueError:
+        When the file is not recognized as a bed file.
+    ValueError:
+        When the file contains an header.
 
     Returns
     ------------------------------------------
@@ -33,88 +45,19 @@ def _extract(bed_path: str, bigwig_path: str) -> pd.DataFrame:
 
     for file_path in (bed_path, bigwig_path):
         if not os.path.exists(file_path):
-            raise ValueError("Given bed file path {file_path} does not exist.".format(
+            raise ValueError("Given file at path {file_path} does not exist.".format(
                 file_path=file_path
             ))
-    return bwtool("extract", "bed", bed_path, bigwig_path)
 
+    if not is_loosely_bed(bed_path):
+        raise ValueError("Given bed candidate file at path {bed_path} is not a bed.".format(
+            bed_path=bed_path
+        ))
 
-def extract(bed_path: str, bigwig_path: str) -> pd.DataFrame:
-    """Return DataFrame with extracted data from given big wig files for regions specified in given.
-
-    Parameters
-    ----------------------------------------
-    bed_path: str, the bed file from which to extract the regions.
-    bigwig_path: str, the bigwig file from which to extract the data for the regions
-
-    Raises
-    -----------------------------------------
-    ValueError:
-        When one of the given file path does not exist.
-
-    Returns
-    ------------------------------------------
-    Dataframe with extracted data.
-    """
-
-    df = _extract(bed_path, bigwig_path)
-    new_data = df[df.columns[-1]
-                  ].str.split(",", expand=True).replace("NA", np.nan).astype(float)
-    new_data.columns = [
-        "score_{i}".format(i=i)
-        for i in new_data.columns
-    ]
-    df = df.drop(columns=df.columns[-1])
-    return pd.concat([df, new_data], axis=1)
-
-
-def extract_mean(bed_path: str, bigwig_path: str) -> pd.DataFrame:
-    """Return DataFrame with mean of extracted data from given big wig files for regions specified in given.
-
-    Parameters
-    ----------------------------------------
-    bed_path: str, the bed file from which to extract the regions.
-    bigwig_path: str, the bigwig file from which to extract the data for the regions
-
-    Raises
-    -----------------------------------------
-    ValueError:
-        When one of the given file path does not exist.
-
-    Returns
-    ------------------------------------------
-    Dataframe with extracted mean data.
-    """
-
-    df = _extract(bed_path, bigwig_path)
-    new_data = df[df.columns[-1]
-                  ].str.split(",", expand=True).replace("NA", np.nan).astype(float).mean()
-    new_data.name = "mean_score"
-    df = df.drop(columns=df.columns[-1])
-    return pd.concat([df, new_data], axis=1)
-
-
-def extract_max(bed_path: str, bigwig_path: str) -> pd.DataFrame:
-    """Return DataFrame with max of extracted data from given big wig files for regions specified in given.
-
-    Parameters
-    ----------------------------------------
-    bed_path: str, the bed file from which to extract the regions.
-    bigwig_path: str, the bigwig file from which to extract the data for the regions
-
-    Raises
-    -----------------------------------------
-    ValueError:
-        When one of the given file path does not exist.
-
-    Returns
-    ------------------------------------------
-    Dataframe with extracted max data.
-    """
-
-    df = _extract(bed_path, bigwig_path)
-    new_data = df[df.columns[-1]
-                  ].str.split(",", expand=True).replace("NA", np.nan).astype(float).max()
-    new_data.name = "max_score"
-    df = df.drop(columns=df.columns[-1])
-    return pd.concat([df, new_data], axis=1)
+    if bed_has_header(bed_path):
+        raise ValueError("Given bed file at path {bed_path} has a header: bwtools does not support bed files with headers".format(
+            bed_path=bed_path
+        ))
+    bed, scores = bwtool("extract", "bed", bed_path, bigwig_path)
+    mask = scores.isna().mean(axis=1) <= nan_threshold
+    return bed[mask], scores[mask]

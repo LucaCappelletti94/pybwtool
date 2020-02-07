@@ -11,7 +11,11 @@ __pycache__
 .notipy.json
 
 .single_run
+.pytest_cache
+.ipynb_checkpoints
 
 .coverage*
 
 coverage.xml
+
+*.ipynb
