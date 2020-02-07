@@ -9,3 +9,6 @@ pybwtool.egg-info/SOURCES.txt
 pybwtool.egg-info/dependency_links.txt
 pybwtool.egg-info/requires.txt
 pybwtool.egg-info/top_level.txt
+pybwtool/utils/__init__.py
+pybwtool/utils/bed_has_header.py
+pybwtool/utils/is_loosely_bed.py
