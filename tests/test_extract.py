@@ -16,15 +16,18 @@ def test_extract():
             pwd=os.path.dirname(os.path.abspath(__file__)),
             threshold=threshold
         )
+        scores.columns = [
+            str(col)
+            for col in scores.columns
+        ]
         df = pd.concat([
             bed, scores
         ], axis=1)
-        df.columns = list(range(1, 1+len(df.columns)))
         os.makedirs(os.path.dirname(path), exist_ok=True)
         if not os.path.exists(path):
-            df.to_csv(path, header=False)
+            df.to_csv(path)
         pd.testing.assert_frame_equal(
-            pd.read_csv(path, index_col=0, header=None),
+            pd.read_csv(path, index_col=0),
             df,
             check_names=False
         )

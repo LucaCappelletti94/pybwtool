@@ -13,7 +13,9 @@ def bwtool(*args: List) -> pd.DataFrame:
     df = pd.read_csv(StringIO(subprocess.run([
         "bwtool", *[str(arg) for arg in args], "/dev/stdout"
     ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.decode("utf-8")), header=None, sep="\t")
-    return df.drop(columns=df.columns[-1]), df[df.columns[-1]].str.split(",", expand=True).replace("NA", np.nan).astype(float)
+    bed = df[df.columns[:3]]
+    bed.columns = ["chrom", "chromStart", "chromEnd"]
+    return bed, df[df.columns[-1]].str.split(",", expand=True).replace("NA", np.nan).astype(float)
 
 
 def extract(bed_path: str, bigwig_path: str, nan_threshold: float = 0.95) -> Tuple[pd.DataFrame, pd.DataFrame]:
