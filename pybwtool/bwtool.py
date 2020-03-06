@@ -71,6 +71,6 @@ def extract(bed_path: str, bigwig_path: str, target: str = None):
         raise ValueError("Given bed file at path {bed_path} has a header: bwtools does not support bed files with headers".format(
             bed_path=bed_path
         ))
-    if target is not None:
-        bwtool_to_file("extract", "bed", bed_path, bigwig_path, target=target)
-    return bwtool_to_df("extract", "bed", bed_path, bigwig_path,)
+    if target is None:
+        return bwtool_to_df("extract", "bed", bed_path, bigwig_path,)
+    bwtool_to_file("extract", "bed", bed_path, bigwig_path, target=target)
