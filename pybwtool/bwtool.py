@@ -18,12 +18,11 @@ def bwtool_to_df(*args: List) -> pd.DataFrame:
     return bed, df[df.columns[-1]].str.split(",", expand=True).replace("NA", np.nan).astype(float)
 
 
-def bwtool_to_file(*args: List, target: str = None):
+def bwtool_to_file(*args: List):
     """Return DataFRame from bwtool with the given args."""
-    f = open(target, "w")
     subprocess.run([
         "bwtool", *[str(arg) for arg in args]
-    ], stdout=f)
+    ])
 
 
 def extract(bed_path: str, bigwig_path: str, target: str = None):
@@ -74,4 +73,4 @@ def extract(bed_path: str, bigwig_path: str, target: str = None):
         ))
     if target is None:
         return bwtool_to_df("extract", "bed", bed_path, bigwig_path)
-    bwtool_to_file("extract", "bed", bed_path, bigwig_path, target=target)
+    bwtool_to_file("extract", "bed", bed_path, bigwig_path, target)
