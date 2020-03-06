@@ -20,9 +20,10 @@ def bwtool_to_df(*args: List) -> pd.DataFrame:
 
 def bwtool_to_file(*args: List, target: str = None):
     """Return DataFRame from bwtool with the given args."""
+    f = open(target, "w")
     subprocess.run([
-        "bwtool", *[str(arg) for arg in args], "> {}".format(target)
-    ])
+        "bwtool", *[str(arg) for arg in args]
+    ], stdout=f)
 
 
 def extract(bed_path: str, bigwig_path: str, target: str = None):
