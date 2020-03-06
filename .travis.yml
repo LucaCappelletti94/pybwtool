@@ -26,12 +26,12 @@ script:
 - git clone https://github.com/CRG-Barcelona/bwtool.git
 - cd libbeato/
 - git checkout 0c30432
-- ./configure --prefix=$HOME CFLAGS="-g -O0 -I${HOME}/include" LDFLAGS=-L${HOME}/lib > /dev/null
+- ./configure --prefix=$HOME CFLAGS="-g -O0 -I${HOME}/include" LDFLAGS=-L${HOME}/lib > /dev/null 2>&1
 - make > /dev/null
 - make install > /dev/null
 - cd ../bwtool/
 #- git checkout 0c30432
-- ./configure --prefix=$HOME CFLAGS="-g -O0 -I${HOME}/include" LDFLAGS=-L${HOME}/lib > /dev/null
+- ./configure --prefix=$HOME CFLAGS="-g -O0 -I${HOME}/include" LDFLAGS=-L${HOME}/lib > /dev/null 2>&1
 - make > /dev/null
 - make install > /dev/null
 - cd ..
@@ -41,7 +41,7 @@ script:
 - coverage combine --append || true
 - coverage report
 - coverage xml
-- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner > /dev/null; fi
+- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner > /dev/null 2>&1; fi
 after_success:
 - coveralls
 - python-codacy-coverage -r coverage.xml
