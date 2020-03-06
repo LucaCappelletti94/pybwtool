@@ -73,5 +73,5 @@ def extract(bed_path: str, bigwig_path: str, target: str = None):
             bed_path=bed_path
         ))
     if target is None:
-        return bwtool_to_df("extract", "bed", bed_path, bigwig_path,)
+        return bwtool_to_df("extract", "bed", bed_path, bigwig_path)
     bwtool_to_file("extract", "bed", bed_path, bigwig_path, target=target)

@@ -34,7 +34,20 @@ def test_extract_to_file():
         bigwig_path="tests/ENCFF523IAP.bigWig",
         target="maybe.bed"
     )
+    csv1 = pd.read_csv("maybe.bed")
 
+    extract(
+        bed_path="tests/HepG2.bed",
+        bigwig_path="tests/ENCFF523IAP.bigWig",
+        target="maybe.bed"
+    )
+
+    csv2 = pd.read_csv("maybe.bed")
+
+    pd.testing.assert_frame_equal(
+        csv1,
+        csv2
+    )
 
 def test_wrong_parameters():
     with pytest.raises(ValueError):
