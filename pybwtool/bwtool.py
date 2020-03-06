@@ -20,12 +20,9 @@ def bwtool_to_df(*args: List) -> pd.DataFrame:
 
 def bwtool_to_file(*args: List, target: str = None):
     """Return DataFRame from bwtool with the given args."""
-    df = pd.read_csv(StringIO(subprocess.run([
+    subprocess.run([
         "bwtool", *[str(arg) for arg in args], "> {}".format(target)
-    ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.decode("utf-8")), header=None, sep="\t")
-    bed = df[df.columns[:3]]
-    bed.columns = ["chrom", "chromStart", "chromEnd"]
-    return bed, df[df.columns[-1]].str.split(",", expand=True).replace("NA", np.nan).astype(float)
+    ])
 
 
 def extract(bed_path: str, bigwig_path: str, target: str = None):
