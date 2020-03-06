@@ -8,7 +8,7 @@ from io import StringIO
 import numpy as np
 
 
-def bwtool(*args: List) -> pd.DataFrame:
+def bwtool_to_df(*args: List) -> pd.DataFrame:
     """Return DataFRame from bwtool with the given args."""
     df = pd.read_csv(StringIO(subprocess.run([
         "bwtool", *[str(arg) for arg in args], "/dev/stdout"
@@ -18,7 +18,17 @@ def bwtool(*args: List) -> pd.DataFrame:
     return bed, df[df.columns[-1]].str.split(",", expand=True).replace("NA", np.nan).astype(float)
 
 
-def extract(bed_path: str, bigwig_path: str, nan_threshold: float = 0.95) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def bwtool_to_file(*args: List, target: str = None):
+    """Return DataFRame from bwtool with the given args."""
+    df = pd.read_csv(StringIO(subprocess.run([
+        "bwtool", *[str(arg) for arg in args], "> {}".format(target)
+    ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.decode("utf-8")), header=None, sep="\t")
+    bed = df[df.columns[:3]]
+    bed.columns = ["chrom", "chromStart", "chromEnd"]
+    return bed, df[df.columns[-1]].str.split(",", expand=True).replace("NA", np.nan).astype(float)
+
+
+def extract(bed_path: str, bigwig_path: str, target: str = None):
     """Return DataFrame with extracted data from given big wig files for regions specified in given.
 
     Parameters
@@ -30,6 +40,10 @@ def extract(bed_path: str, bigwig_path: str, nan_threshold: float = 0.95) -> Tup
     nan_threshold:float=0.95,
         Maximum percentage of nan to allow in a row to keep it,
         otherwise the row is dropped.
+    target: str = None,
+        Path where to write the extraction, optionally.
+        It can be useful when extracting files that cannot
+        be hold in RAM, expecially when handling multiprocessing.
 
     Raises
     -----------------------------------------
@@ -60,6 +74,6 @@ def extract(bed_path: str, bigwig_path: str, nan_threshold: float = 0.95) -> Tup
         raise ValueError("Given bed file at path {bed_path} has a header: bwtools does not support bed files with headers".format(
             bed_path=bed_path
         ))
-    bed, scores = bwtool("extract", "bed", bed_path, bigwig_path)
-    mask = scores.isna().mean(axis=1) <= nan_threshold
-    return bed[mask], scores[mask]
+    if target is not None:
+        bwtool_to_file("extract", "bed", bed_path, bigwig_path, target=target)
+    return bwtool_to_df("extract", "bed", bed_path, bigwig_path,)

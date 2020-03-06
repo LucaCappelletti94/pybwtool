@@ -18,7 +18,7 @@ As usual, just download it using pip:
 
 Tests Coverage
 ----------------------------------------------
-Since some software handling coverages sometime get slightly
+Since some software handling coverages sometimes get slightly
 different results, here's three of them:
 
 |coveralls| |sonar_coverage| |code_climate_coverage|
@@ -70,6 +70,9 @@ The obtained dataframes look as follows:
 
 Common fixes for getting bwtool to work
 ----------------------------------------------
+Consider looking at the Travis-CI configuration.
+If it works there, it should also work for you.
+
 - `For when the installation of bwtool gets stuck <https://github.com/CRG-Barcelona/bwtool/issues/65>`_
 - `For when the installation of libbeato (a required library) gets stuck <https://github.com/CRG-Barcelona/libbeato/issues/6>`_
 
