@@ -5,20 +5,13 @@ import pytest
 
 
 def test_extract():
-    bed, scores = extract(
+    df = extract(
         bed_path="tests/HepG2.bed",
         bigwig_path="tests/ENCFF523IAP.bigWig"
     )
     path = "{pwd}/expected/test.bed".format(
         pwd=os.path.dirname(os.path.abspath(__file__))
     )
-    scores.columns = [
-        str(col)
-        for col in scores.columns
-    ]
-    df = pd.concat([
-        bed, scores
-    ], axis=1)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     if not os.path.exists(path):
         df.to_csv(path)
