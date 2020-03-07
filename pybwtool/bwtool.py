@@ -10,19 +10,30 @@ import numpy as np
 
 def bwtool_to_df(*args: List) -> pd.DataFrame:
     """Return DataFRame from bwtool with the given args."""
-    df = pd.read_csv(StringIO(subprocess.run([
-        "bwtool", *[str(arg) for arg in args], "/dev/stdout"
-    ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.decode("utf-8")), header=None, sep="\t")
-    bed = df[df.columns[:3]]
-    bed.columns = ["chrom", "chromStart", "chromEnd"]
-    return bed, df[df.columns[-1]].str.split(",", expand=True).replace("NA", np.nan).astype(float)
+    return pd.read_csv(
+        StringIO(subprocess.run([
+            "bwtool", "-tabs", *[str(arg) for arg in args], "/dev/stdout"
+        ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        ).stdout.decode("utf-8")), header=None, sep="\t").replace("NA", np.nan).astype(float)
 
 
 def bwtool_to_file(*args: List):
     """Return DataFRame from bwtool with the given args."""
     subprocess.run([
-        "bwtool", *[str(arg) for arg in args]
+        "bwtool", "-tabs", *[str(arg) for arg in args]
     ])
+
+
+def bwtool_to_compressed(*args):
+    args, target = args[:-1], args[-1]
+    p1 = subprocess.Popen([
+        "bwtool", "-tabs", *[str(arg) for arg in args], "/dev/stdout"
+    ], stdout=subprocess.PIPE)
+    subprocess.Popen(["gzip", ">", target], stdin=p1.stdout,
+                     stdout=subprocess.PIPE)
+    p1.stdout.close()
 
 
 def extract(bed_path: str, bigwig_path: str, target: str = None):
@@ -73,4 +84,7 @@ def extract(bed_path: str, bigwig_path: str, target: str = None):
         ))
     if target is None:
         return bwtool_to_df("extract", "bed", bed_path, bigwig_path)
-    bwtool_to_file("extract", "bed", bed_path, bigwig_path, target)
+    if target.endswith(".gz"):
+        bwtool_to_compressed("extract", "bed", bed_path, bigwig_path, target)
+    else:
+        bwtool_to_file("extract", "bed", bed_path, bigwig_path, target)
