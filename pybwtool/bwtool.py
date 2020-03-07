@@ -34,13 +34,14 @@ def bwtool_to_df(*args: List) -> pd.DataFrame:
     return df
 
 def bwtool_to_file(*args: List):
-    """Return DataFRame from bwtool with the given args."""
+    """Save output to given output file."""
     subprocess.run([
         "bwtool", "-tabs", *[str(arg) for arg in args]
     ])
 
 
 def bwtool_to_compressed(*args):
+    """Save compressed output to given output file."""
     args, target = args[:-1], args[-1]
     f = open(target, "w")
     p1 = subprocess.Popen([
