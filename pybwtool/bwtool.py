@@ -10,30 +10,51 @@ import numpy as np
 
 def bwtool_to_df(*args: List) -> pd.DataFrame:
     """Return DataFRame from bwtool with the given args."""
-    return pd.read_csv(
-        StringIO(subprocess.run(
-            [
-                "bwtool", "-tabs", *[str(arg) for arg in args], "/dev/stdout"
-            ],
-            stdout=subprocess.PIPE
-        ).stdout.decode("utf-8")), header=None, sep="\t").replace("NA", np.nan).astype(float)
-
+    df = pd.read_csv(
+        StringIO(subprocess.run([
+            "bwtool", "-tabs", *[str(arg) for arg in args], "/dev/stdout"
+        ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        ).stdout.decode("utf-8")),
+        header=None,
+        sep="\t"
+    ).replace("NA", np.nan)
+    df.columns = [
+        "chrom",
+        "chromStart",
+        "chromEnd",
+        "name",
+        "score",
+        *[
+            str(i)
+            for i in range(df.shape[1]-5)
+        ]
+    ]
+    return df
 
 def bwtool_to_file(*args: List):
-    """Return DataFRame from bwtool with the given args."""
+    """Save output to given output file."""
     subprocess.run([
         "bwtool", "-tabs", *[str(arg) for arg in args]
     ])
 
 
 def bwtool_to_compressed(*args):
+    """Save compressed output to given output file."""
     args, target = args[:-1], args[-1]
+    f = open(target, "w")
     p1 = subprocess.Popen([
         "bwtool", "-tabs", *[str(arg) for arg in args], "/dev/stdout"
     ], stdout=subprocess.PIPE)
-    subprocess.Popen(["gzip", ">", target], stdin=p1.stdout,
-                     stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(
+        ["gzip"],
+        stdin=p1.stdout,
+        stdout=f
+    )
+    p2.wait()
     p1.stdout.close()
+    p1.wait()
 
 
 def extract(bed_path: str, bigwig_path: str, target: str = None):

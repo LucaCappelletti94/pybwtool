@@ -14,9 +14,9 @@ def test_extract():
     )
     os.makedirs(os.path.dirname(path), exist_ok=True)
     if not os.path.exists(path):
-        df.to_csv(path)
+        df.to_csv(path, index=False)
     pd.testing.assert_frame_equal(
-        pd.read_csv(path, index_col=0),
+        pd.read_csv(path),
         df,
         check_names=False
     )
