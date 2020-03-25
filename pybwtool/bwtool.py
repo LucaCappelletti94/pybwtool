@@ -11,11 +11,11 @@ import numpy as np
 def bwtool_to_df(*args: List) -> pd.DataFrame:
     """Return DataFRame from bwtool with the given args."""
     return pd.read_csv(
-        StringIO(subprocess.run([
-            "bwtool", "-tabs", *[str(arg) for arg in args], "/dev/stdout"
-        ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+        StringIO(subprocess.run(
+            [
+                "bwtool", "-tabs", *[str(arg) for arg in args], "/dev/stdout"
+            ],
+            stdout=subprocess.PIPE
         ).stdout.decode("utf-8")), header=None, sep="\t").replace("NA", np.nan).astype(float)
 
 
