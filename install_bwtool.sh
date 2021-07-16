@@ -1,3 +1,4 @@
+apt-get install zlib1g-dev
 git clone https://github.com/CRG-Barcelona/libbeato.git
 git clone https://github.com/CRG-Barcelona/bwtool.git
 cd libbeato/
