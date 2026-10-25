@@ -1,6 +1,6 @@
 pybwtool
 =========================================================================================
-|travis| |sonar_quality| |sonar_maintainability| |codacy|
+|travis| |codacy|
 |code_climate_maintainability| |pip| |downloads|
 
 Python wrapper for the `bwtool library <https://github.com/CRG-Barcelona/bwtool>`_.
@@ -21,7 +21,7 @@ Tests Coverage
 Since some software handling coverages sometimes get slightly
 different results, here's three of them:
 
-|coveralls| |sonar_coverage| |code_climate_coverage|
+|coveralls| |code_climate_coverage|
 
 Extract
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,18 +78,6 @@ If it works there, it should also work for you.
 .. |travis| image:: https://travis-ci.org/LucaCappelletti94/pybwtool.png
    :target: https://travis-ci.org/LucaCappelletti94/pybwtool
    :alt: Travis CI build
-
-.. |sonar_quality| image:: https://sonarcloud.io/api/project_badges/measure?project=LucaCappelletti94_pybwtool&metric=alert_status
-    :target: https://sonarcloud.io/dashboard/index/LucaCappelletti94_pybwtool
-    :alt: SonarCloud Quality
-
-.. |sonar_maintainability| image:: https://sonarcloud.io/api/project_badges/measure?project=LucaCappelletti94_pybwtool&metric=sqale_rating
-    :target: https://sonarcloud.io/dashboard/index/LucaCappelletti94_pybwtool
-    :alt: SonarCloud Maintainability
-
-.. |sonar_coverage| image:: https://sonarcloud.io/api/project_badges/measure?project=LucaCappelletti94_pybwtool&metric=coverage
-    :target: https://sonarcloud.io/dashboard/index/LucaCappelletti94_pybwtool
-    :alt: SonarCloud Coverage
 
 .. |coveralls| image:: https://coveralls.io/repos/github/LucaCappelletti94/pybwtool/badge.svg?branch=master
     :target: https://coveralls.io/github/LucaCappelletti94/pybwtool?branch=master
